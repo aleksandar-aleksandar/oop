@@ -11,10 +11,6 @@ izabrani opseg datuma za upis na kurs, za izabrani opseg datuma.
 ● Izveštaj za prikaz soba, što podrazumeva prikaz podataka o sobi i njenom tipu, ukupan broj
 noćenja u toj sobi za izabrani opseg datuma, kao i ukupne prihode iz svake sobe na
 osnovu izabranog opsega datuma
-● GUI (Swing).
-● Prilikom rezervacije, omogućiti gostu da unese dodatne kriterijume pretrage mogućih
-soba (da li soba poseduje klima uređaj, balkon, tv, pušačka/nepušačka soba), pa izlistati
-samo tipove soba koji imaju konkretne sobe koje zadovoljavaju te kriterijume.
 ● Recepcioner ima mogućnost da filtrira sve rezervacije po tipu sobe, konkretnoj sobi,
 opsegu cene koju gost plaća (ako želi prvo da odobri sve najskuplje rezervacije na koje
 hotel ima najveću zaradu), kao i po dodatnim uslugama koje su navedene u rezervaciji.

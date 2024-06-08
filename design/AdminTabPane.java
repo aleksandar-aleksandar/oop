@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -15,7 +14,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import logic.*;
 
 public class AdminTabPane extends JFrame {
@@ -393,6 +391,7 @@ public class AdminTabPane extends JFrame {
         JButton refreshSobe = new JButton("Osvezi");
         refreshSobe.setBounds(10, 350, 80, 23);
         urediSobe.add(refreshSobe);
+        
         refreshSobe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
