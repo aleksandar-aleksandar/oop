@@ -1,3 +1,7 @@
 1. Cenovnik da unapredim ta bude dinamicniji, kad se doda neka usluga da se doda i mesto za nju
 
 2. Kod potvrde rezervacija proveriti da li vec ima neka potvrđena rezervaija u tom periodu
+
+3. Napraviti Unit Testove
+
+4. Napraviti Izvestaje
