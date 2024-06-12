@@ -29,12 +29,12 @@ public class AdminTabPane extends JFrame {
         add(tabbedPane);
 
         tabbedPane.addTab("Odjava", new LogOutPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
-        tabbedPane.addTab("Dodaj zaposlenog", new AddEmployeePanel(zaposleni));
-        tabbedPane.addTab("Uredi zaposlenog", new EditEmployeePanel(zaposleni));
-        tabbedPane.addTab("Dodaj SOBE", new AddRoomPanel(sobe, tipoviSobe));
-        tabbedPane.addTab("Uredi SOBE",new EditRoomPanel(sobe));
-        tabbedPane.addTab("Dodaj CENE", new AddPricesPanel(cene));
-        tabbedPane.addTab("Uredi CENE", new EditPricesPanel(cene));
+        tabbedPane.addTab("Dodaj Zaposlenog", new AddEmployeePanel(zaposleni));
+        tabbedPane.addTab("Uredi Zaposlene", new EditEmployeePanel(zaposleni));
+        tabbedPane.addTab("Dodaj Sobu", new AddRoomPanel(sobe, tipoviSobe));
+        tabbedPane.addTab("Uredi Sobe",new EditRoomPanel(sobe));
+        tabbedPane.addTab("Dodaj Cenovnik", new AddPricesPanel(cene));
+        tabbedPane.addTab("Uredi Cenovnike", new EditPricesPanel(cene));
     }
 
     public static void main(String[] args) {

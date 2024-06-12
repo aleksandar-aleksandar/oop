@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import logic.Cenovnik;
@@ -130,6 +131,31 @@ public class AddPricesPanel extends JPanel {
                 String datumPocetka = dpTxt.getText();
                 String datumZavrsetka = dzTxt.getText();
 
+                if (cena1.isEmpty() || cena2.isEmpty() || cena3.isEmpty() || cena4.isEmpty() || cena5.isEmpty() ||
+            cena6.isEmpty() || cena7.isEmpty() || cena8.isEmpty() || cena9.isEmpty() || cena10.isEmpty() ||
+            datumPocetka.isEmpty() || datumZavrsetka.isEmpty()) {
+            // Display error message
+            JOptionPane.showMessageDialog(null, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;     
+        }
+
+        // Convert prices to integers for comparison
+        int cena1Int = Integer.parseInt(cena1);
+        int cena2Int = Integer.parseInt(cena2);
+        int cena3Int = Integer.parseInt(cena3);
+        int cena4Int = Integer.parseInt(cena4);
+        int cena5Int = Integer.parseInt(cena5);
+
+                // Check if prices increase with room size
+                if (cena2Int < cena1Int || cena3Int < cena2Int || cena4Int < cena3Int || cena5Int < cena4Int) {
+                    // Display error message and return without adding the prices
+                    // Here, you can display a message dialog or set an error label
+                    // For now, let's print an error message to console
+                    JOptionPane.showMessageDialog(null, "Prices should increase with room size!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // If the prices are valid, add them to the list of prices and save
                 cene.add(new Cenovnik(cena1, cena2, cena3, cena4, cena5, cena6, cena7, cena8, cena9, cena10,
                         datumPocetka, datumZavrsetka));
                 DataManager.upisiCene(cene);

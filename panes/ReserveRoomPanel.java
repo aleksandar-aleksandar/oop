@@ -12,20 +12,21 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import logic.DataManager;
 import logic.Gost;
 import logic.Rezervacija;
 import logic.Cenovnik;
 import logic.TipSobe;
 
-public class ReserveRoomPanel extends JPanel{
+public class ReserveRoomPanel extends JPanel {
 
     private JTextField textField;
     private JTextField textField_1;
-    public ReserveRoomPanel(List<TipSobe> tipoviSobe, List<Cenovnik> cene, List<Rezervacija> rezervacije, Gost ulogovanGost){
+
+    public ReserveRoomPanel(List<TipSobe> tipoviSobe, List<Cenovnik> cene, List<Rezervacija> rezervacije, Gost ulogovanGost) {
         setLayout(null);
 
         JLabel lblNewLabel = new JLabel("Tip Sobe");
@@ -90,44 +91,80 @@ public class ReserveRoomPanel extends JPanel{
         btnNewButton_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int maxId = 0;
-                for (Rezervacija rezervacija : rezervacije) {
-                    if (Integer.parseInt(rezervacija.id) > maxId) {
-                        maxId = Integer.parseInt(rezervacija.id);
+                if (validateFields()) {
+                    int maxId = 0;
+                    for (Rezervacija rezervacija : rezervacije) {
+                        if (Integer.parseInt(rezervacija.id) > maxId) {
+                            maxId = Integer.parseInt(rezervacija.id);
+                        }
                     }
-                }
-                String noviId = Integer.toString(maxId + 1);
-                String id = noviId;
-                String gost = ulogovanGost.korisnickoIme;
-                String datumPocetka = textField.getText();
-                String datumZavrsetka = textField_1.getText();
-                String dodatneUsluge = "";
-                if (chckbxNewCheckBox.isSelected()) {
-                    dodatneUsluge = dodatneUsluge + "Dorucak ";
-                }
-                if (chckbxRucak.isSelected()) {
-                    dodatneUsluge = dodatneUsluge + "Rucak ";
-                }
-                if (chckbxNewCheckBox_1_1.isSelected()) {
-                    dodatneUsluge = dodatneUsluge + "Vecera ";
-                }
-                if (chckbxNewCheckBox_1_1_1.isSelected()) {
-                    dodatneUsluge = dodatneUsluge + "Spa ";
-                }
-                if (chckbxNewCheckBox_1_1_1_1.isSelected()) {
-                    dodatneUsluge = dodatneUsluge + "Bazen ";
-                }
-                String tipSobe = (String) comboBox.getSelectedItem();
+                    String noviId = Integer.toString(maxId + 1);
+                    String id = noviId;
+                    String gost = ulogovanGost.korisnickoIme;
+                    String datumPocetka = textField.getText();
+                    String datumZavrsetka = textField_1.getText();
+                    String dodatneUsluge = "";
+                    if (chckbxNewCheckBox.isSelected()) {
+                        dodatneUsluge = dodatneUsluge + "Dorucak ";
+                    }
+                    if (chckbxRucak.isSelected()) {
+                        dodatneUsluge = dodatneUsluge + "Rucak ";
+                    }
+                    if (chckbxNewCheckBox_1_1.isSelected()) {
+                        dodatneUsluge = dodatneUsluge + "Vecera ";
+                    }
+                    if (chckbxNewCheckBox_1_1_1.isSelected()) {
+                        dodatneUsluge = dodatneUsluge + "Spa ";
+                    }
+                    if (chckbxNewCheckBox_1_1_1_1.isSelected()) {
+                        dodatneUsluge = dodatneUsluge + "Bazen ";
+                    }
+                    String tipSobe = (String) comboBox.getSelectedItem();
 
-                int cena = izracunajCenu(cene, datumPocetka, datumZavrsetka, tipSobe, dodatneUsluge);
+                    int cena = izracunajCenu(cene, datumPocetka, datumZavrsetka, tipSobe, dodatneUsluge);
 
-                rezervacije.add(
-                        new Rezervacija(id, gost, tipSobe, datumPocetka, datumZavrsetka, dodatneUsluge, "NA CEKANJU",
-                                Integer.toString(cena)));
-                DataManager.upisiRezervacije(rezervacije);
+                    rezervacije.add(
+                            new Rezervacija(id, gost, tipSobe, datumPocetka, datumZavrsetka, dodatneUsluge, "NA CEKANJU",
+                                    Integer.toString(cena)));
+                    DataManager.upisiRezervacije(rezervacije);
+                }
             }
 
         });
+    }
+
+    private boolean validateFields() {
+        String datumPocetka = textField.getText();
+        String datumZavrsetka = textField_1.getText();
+
+        if (datumPocetka.isEmpty() || datumZavrsetka.isEmpty()) {
+            // If any date field is empty, show a message
+            JOptionPane.showMessageDialog(this, "Molimo unesite datume.", "Greška", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false); // Ensure strict date parsing
+
+        try {
+            // Try parsing the dates
+            Date pocetak = dateFormat.parse(datumPocetka);
+            Date zavrsetak = dateFormat.parse(datumZavrsetka);
+
+            // Check if the end date is after the start date
+            if (zavrsetak.before(pocetak)) {
+                JOptionPane.showMessageDialog(this, "Datum završetka ne može biti pre datuma početka.", "Greška",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (ParseException ex) {
+            // If parsing fails, show an error message
+            JOptionPane.showMessageDialog(this, "Neispravan format datuma. Molimo unesite datume u formatu dd-MM-yyyy.", "Greška", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // All fields are valid
+        return true;
     }
 
     public int izracunajCenu(List<Cenovnik> cene, String datumPocetka, String datumZavrsetka, String tipSobe,
@@ -220,3 +257,4 @@ public class ReserveRoomPanel extends JPanel{
         return datesInRange;
     }
 }
+

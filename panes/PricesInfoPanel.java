@@ -2,32 +2,28 @@ package panes;
 
 import java.util.List;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
 import logic.Cenovnik;
 
-public class PricesInfoPanel extends JPanel{
-    public PricesInfoPanel(List<Cenovnik> cene){
+public class PricesInfoPanel extends JPanel {
+    public PricesInfoPanel(List<Cenovnik> cene) {
         setLayout(null);
 
-        String[] nasloviCenovnici = { "id", "tip sobe", "pocetak", "zavrsetak", "dodatne usluge", "stanje", "id",
-                "tip sobe", "pocetak", "zavrsetak", "dodatne usluge", "stanje" };
+        String[] columnHeaders = { "Cena 1", "Cena 2", "Cena 3", "Cena 4", "Cena 5", "Cena 6", "Cena 7", "Cena 8", "Cena 9", "Cena 10", "Datum početka", "Datum završetka" };
 
-        DefaultTableModel modelCenovnici = new DefaultTableModel(nasloviCenovnici, 0); // Create model with column
-                                                                                       // names
+        DefaultTableModel model = new DefaultTableModel(columnHeaders, 0);
 
         for (Cenovnik cenovnik : cene) {
-            // Create a new row with data extracted from Zaposleni object
-            Object[] rowData = { cenovnik.cena1, cenovnik.cena2, cenovnik.cena3, cenovnik.cena4, cenovnik.cena5,
-                    cenovnik.cena6, cenovnik.cena7, cenovnik.cena8, cenovnik.cena9, cenovnik.cena10,
-                    cenovnik.datumPocetka, cenovnik.datumZavrsetka, cenovnik.datumZavrsetka };
-            modelCenovnici.addRow(rowData); // Add the row to the model
+            Object[] rowData = { cenovnik.cena1, cenovnik.cena2, cenovnik.cena3, cenovnik.cena4, cenovnik.cena5, cenovnik.cena6, cenovnik.cena7, cenovnik.cena8, cenovnik.cena9, cenovnik.cena10, cenovnik.datumPocetka, cenovnik.datumZavrsetka };
+            model.addRow(rowData);
         }
 
-        JTable table1 = new JTable(modelCenovnici);
-        table1.setBounds(10, 29, 759, 230);
-        table1.setEnabled(false);
-        add(table1);
+        JTable table = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(10, 29, 759, 230);
+        add(scrollPane);
     }
 }

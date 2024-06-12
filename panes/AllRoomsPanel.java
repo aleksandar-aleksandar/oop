@@ -3,44 +3,53 @@ package panes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import logic.DataManager;
 import logic.Soba;
 
 public class AllRoomsPanel extends JPanel {
     public AllRoomsPanel(List<Soba> sobe){
         setLayout(null);
+        
+        // Column headers for the table
+        String[] columnHeaders = { "Broj", "Tip", "Stanje" };
 
-        String[] rezervacijeNaslovi2 = { "broj", "tip", "stanje" };
-        DefaultTableModel modelRezervacija2 = new DefaultTableModel(rezervacijeNaslovi2, 0); // Create model with column
+        // Create table model with column headers
+        DefaultTableModel model = new DefaultTableModel(columnHeaders, 0);
 
+        // Populate the table model with room data
         for (Soba soba : sobe) {
             Object[] rowData = { soba.brojSobe, soba.tip, soba.stanje };
-            modelRezervacija2.addRow(rowData);
-            // Add the row to the model
+            model.addRow(rowData);
         }
-        JTable tabelaSvihSobe = new JTable(modelRezervacija2);
-        tabelaSvihSobe.setBounds(0, 0, 800, 200);
-        tabelaSvihSobe.setEnabled(false);
-        add(tabelaSvihSobe);
 
-        JButton osveziSobe = new JButton("Osvezi");
-        osveziSobe.setBounds(350, 300, 100, 23);
-        add(osveziSobe);
+        // Create the table with the model
+        JTable table = new JTable(model);
+        
+        // Create a scroll pane and add the table to it
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(10, 10, 780, 250);
+        add(scrollPane);
 
-        osveziSobe.addActionListener(new ActionListener() {
+        // Add a refresh button
+        JButton refreshButton = new JButton("Osveži");
+        refreshButton.setBounds(350, 320, 100, 23);
+        add(refreshButton);
+
+        // Add action listener to the refresh button
+        refreshButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                modelRezervacija2.setRowCount(0);
+                // Clear existing data from the table
+                model.setRowCount(0);
+                
+                // Populate the table with the latest room data
                 for (Soba soba : sobe) {
                     Object[] rowData = { soba.brojSobe, soba.tip, soba.stanje };
-                    modelRezervacija2.addRow(rowData);
-                    // Add the row to the model
+                    model.addRow(rowData);
                 }
+                
+                // Update the room data in the database
                 DataManager.upisiSobe(sobe);
             }
         });

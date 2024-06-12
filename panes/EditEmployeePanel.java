@@ -6,35 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import logic.DataManager;
 import logic.Zaposleni;
 
-public class EditEmployeePanel extends JPanel{
-    public EditEmployeePanel(List<Zaposleni> zaposleni){
+public class EditEmployeePanel extends JPanel {
+    public EditEmployeePanel(List<Zaposleni> zaposleni) {
         setLayout(null);
 
-        String[] naslovi = { "Ime", "Prezime", "pol", "datum", "broj", "adresa", "korisnicko ime", "godine staze",
-                "lozinka", "nivo strucne spreme" };
+        String[] naslovi = { "Ime", "Prezime", "Pol", "Datum Rodjenja", "Broj Telefona", "Adresa", "Korisnicko Ime", "Godine Staza", "Lozinka", "Nivo Strucne Spreme" };
 
-        DefaultTableModel model = new DefaultTableModel(naslovi, 0); // Create model with column names
+        DefaultTableModel model = new DefaultTableModel(naslovi, 0);
 
         for (Zaposleni zap : zaposleni) {
-            // Create a new row with data extracted from Zaposleni object
-            Object[] rowData = { zap.ime, zap.prezime, zap.pol,
-                    zap.datumRodjenja, zap.brojTelefon, zap.adresa,
-                    zap.korisnickoIme, zap.godineStaza, zap.lozinka,
-                    zap.nivoStrucneSpreme };
-            model.addRow(rowData); // Add the row to the model
+            Object[] rowData = { zap.ime, zap.prezime, zap.pol, zap.datumRodjenja, zap.brojTelefon, zap.adresa, zap.korisnickoIme, zap.godineStaza, zap.lozinka, zap.nivoStrucneSpreme };
+            model.addRow(rowData);
         }
+
         JTable tabelaZaposlenih = new JTable(model);
-        JScrollBar scrollBar = new JScrollBar();
-        tabelaZaposlenih.add(scrollBar);
-        tabelaZaposlenih.repaint();
-        tabelaZaposlenih.setBounds(100, 25, 600, 300);
-        add(tabelaZaposlenih);
+        JScrollPane scrollPane = new JScrollPane(tabelaZaposlenih);
+        scrollPane.setBounds(0, 0, 800, 300);
+        add(scrollPane);
 
         JButton sacuvajStanjeButton = new JButton("Sacuvaj");
         sacuvajStanjeButton.setBounds(710, 350, 80, 23);
@@ -43,7 +37,6 @@ public class EditEmployeePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Zaposleni> updatedZaposleniList = new ArrayList<>();
-
                 for (int i = 0; i < model.getRowCount(); i++) {
                     String ime = (String) model.getValueAt(i, 0);
                     String prezime = (String) model.getValueAt(i, 1);
@@ -53,11 +46,17 @@ public class EditEmployeePanel extends JPanel{
                     String adresa = (String) model.getValueAt(i, 5);
                     String korisnickoIme = (String) model.getValueAt(i, 6);
                     String godine = (String) model.getValueAt(i, 7);
-                    String nivo = (String) model.getValueAt(i, 9);
                     String lozinka = (String) model.getValueAt(i, 8);
+                    String nivo = (String) model.getValueAt(i, 9);
+
+                    // Validate input data
+                    if (ime.isEmpty() || prezime.isEmpty() || pol.isEmpty() || datum.isEmpty() || broj.isEmpty() || adresa.isEmpty() || korisnickoIme.isEmpty() || godine.isEmpty() || lozinka.isEmpty() || nivo.isEmpty()) {
+                        // Handle validation error (e.g., show error message)
+                        System.err.println("Validation error: All fields must be filled.");
+                        return;
+                    }
 
                     Zaposleni zap = zaposleni.get(i);
-
                     zap.ime = ime;
                     zap.prezime = prezime;
                     zap.pol = pol;
@@ -74,29 +73,11 @@ public class EditEmployeePanel extends JPanel{
 
                 DataManager.upisiZaposlene(updatedZaposleniList);
             }
-
         });
 
         JButton obrisiZaposlenog = new JButton("Obrisi odabranog zaposlenog");
-
-        JButton refreshButton = new JButton("Osvezi");
-        refreshButton.setBounds(10, 350, 80, 23);
-        add(refreshButton);
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.setRowCount(0);
-                for (Zaposleni zap : zaposleni) {
-                    // Create a new row with data extracted from Zaposleni object
-                    Object[] rowData = { zap.ime, zap.prezime, zap.pol,
-                            zap.datumRodjenja, zap.brojTelefon, zap.adresa,
-                            zap.korisnickoIme, zap.godineStaza, zap.lozinka,
-                            zap.nivoStrucneSpreme };
-                    model.addRow(rowData); // Add the row to the model
-                }
-            }
-        });
-
+        obrisiZaposlenog.setBounds(100, 350, 600, 23);
+        add(obrisiZaposlenog);
         obrisiZaposlenog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,8 +89,19 @@ public class EditEmployeePanel extends JPanel{
                 }
             }
         });
-        obrisiZaposlenog.setBounds(100, 350, 600, 23);
-        add(obrisiZaposlenog);
 
+        JButton refreshButton = new JButton("Osvezi");
+        refreshButton.setBounds(10, 350, 80, 23);
+        add(refreshButton);
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.setRowCount(0);
+                for (Zaposleni zap : zaposleni) {
+                    Object[] rowData = { zap.ime, zap.prezime, zap.pol, zap.datumRodjenja, zap.brojTelefon, zap.adresa, zap.korisnickoIme, zap.godineStaza, zap.lozinka, zap.nivoStrucneSpreme };
+                    model.addRow(rowData);
+                }
+            }
+        });
     }
 }

@@ -22,7 +22,7 @@ public class SobaricaTabPane extends JFrame {
         add(tabbedPane);
 
         tabbedPane.addTab("Odjava", new LogOutPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
-        tabbedPane.addTab("Raspremi sobu", new RoomServicePanel(sobe));
+        tabbedPane.addTab("Raspremi Sobe", new RoomServicePanel(sobe));
         
 
     }

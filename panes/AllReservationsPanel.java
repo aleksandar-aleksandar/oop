@@ -1,13 +1,14 @@
 package panes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,10 +16,10 @@ import logic.DataManager;
 import logic.Rezervacija;
 
 public class AllReservationsPanel extends JPanel {
-    public AllReservationsPanel(List<Rezervacija> rezervacije){
+    public AllReservationsPanel(List<Rezervacija> rezervacije) {
         setLayout(null);
 
-        String[] rezervacijeNaslovi1 = { "broj", "tip", "stanje", "datum zavrsetka", "jij", "korae", "loool", "234" };
+        String[] rezervacijeNaslovi1 = { "ID", "Gost", "Tip Sobe", "Datum Pocetka", "Datum Zavrsetka", "Dodatne Usluge", "Stanje", "Cena" };
 
         DefaultTableModel modelRezervacija1 = new DefaultTableModel(rezervacijeNaslovi1, 0);
 
@@ -27,12 +28,12 @@ public class AllReservationsPanel extends JPanel {
                     rezervacija.datumPocetka, rezervacija.datumZavrsetka, rezervacija.dodatneUsluge,
                     rezervacija.stanje, rezervacija.cena };
             modelRezervacija1.addRow(rowData);
-            // Add the row to the model
         }
 
         JTable tabelaSvihRezervacija = new JTable(modelRezervacija1);
-        tabelaSvihRezervacija.setBounds(0, 0, 800, 300);
-        add(tabelaSvihRezervacija);
+        JScrollPane scrollPane = new JScrollPane(tabelaSvihRezervacija);
+        scrollPane.setBounds(0, 0, 800, 300);
+        add(scrollPane);
 
         JButton obrisiRezervaciju = new JButton("Obrisi");
         obrisiRezervaciju.setBounds(300, 350, 100, 23);
@@ -42,9 +43,11 @@ public class AllReservationsPanel extends JPanel {
                 int row = tabelaSvihRezervacija.getSelectedRow();
                 if (row >= 0) {
                     modelRezervacija1.removeRow(row);
+                    rezervacije.remove(row);
+                    DataManager.upisiRezervacije(rezervacije);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Odaberite red za brisanje.");
                 }
-
-                DataManager.upisiRezervacije(rezervacije);
             }
         });
 
@@ -60,7 +63,6 @@ public class AllReservationsPanel extends JPanel {
                             rezervacija.datumPocetka, rezervacija.datumZavrsetka, rezervacija.dodatneUsluge,
                             rezervacija.stanje, rezervacija.cena };
                     modelRezervacija1.addRow(rowData);
-                    // Add the row to the model
                 }
                 DataManager.upisiRezervacije(rezervacije);
             }
@@ -73,6 +75,8 @@ public class AllReservationsPanel extends JPanel {
         sacuvajStanjeRezervacija.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 List<Rezervacija> updatedRezervacije = new ArrayList<>();
+                boolean valid = true;
+
                 for (int i = 0; i < modelRezervacija1.getRowCount(); i++) {
                     String id = (String) modelRezervacija1.getValueAt(i, 0);
                     String gost = (String) modelRezervacija1.getValueAt(i, 1);
@@ -82,11 +86,61 @@ public class AllReservationsPanel extends JPanel {
                     String dodatneUsluge = (String) modelRezervacija1.getValueAt(i, 5);
                     String stanje = (String) modelRezervacija1.getValueAt(i, 6);
                     String cena = (String) modelRezervacija1.getValueAt(i, 7);
-                    updatedRezervacije
-                            .add(new Rezervacija(id, gost, tipSobe, datumPocetka, datumZavrsetka, dodatneUsluge,
-                                    stanje, cena));
+
+                    // Validate fields
+                    if (id == null || id.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "ID ne može biti prazan.");
+                        break;
+                    }
+                    if (gost == null || gost.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Gost ne može biti prazan.");
+                        break;
+                    }
+                    if (tipSobe == null || tipSobe.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Tip sobe ne može biti prazan.");
+                        break;
+                    }
+                    if (datumPocetka == null || datumPocetka.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Datum početka ne može biti prazan.");
+                        break;
+                    }
+                    if (datumZavrsetka == null || datumZavrsetka.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Datum završetka ne može biti prazan.");
+                        break;
+                    }
+                    if (stanje == null || stanje.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Stanje ne može biti prazno.");
+                        break;
+                    }
+                    if (cena == null || cena.isEmpty()) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Cena ne može biti prazna.");
+                        break;
+                    }
+                    try {
+                        Double.parseDouble(cena);
+                    } catch (NumberFormatException ex) {
+                        valid = false;
+                        JOptionPane.showMessageDialog(null, "Cena mora biti broj.");
+                        break;
+                    }
+
+                    if (valid) {
+                        updatedRezervacije.add(new Rezervacija(id, gost, tipSobe, datumPocetka, datumZavrsetka,
+                                dodatneUsluge, stanje, cena));
+                    }
                 }
-                DataManager.upisiRezervacije(updatedRezervacije);
+
+                if (valid) {
+                    DataManager.upisiRezervacije(updatedRezervacije);
+                    JOptionPane.showMessageDialog(null, "Rezervacije su uspešno sačuvane.");
+                }
             }
         });
     }

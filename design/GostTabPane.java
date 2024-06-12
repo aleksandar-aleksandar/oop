@@ -31,9 +31,9 @@ public class GostTabPane extends JFrame {
         getContentPane().add(tabbedPane);
 
         tabbedPane.addTab("Odjava", new LogOutPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
-        tabbedPane.addTab("Rezerviraj sobu", new ReserveRoomPanel(tipoviSobe, cene, rezervacije, ulogovanGost));
-        tabbedPane.addTab("Moje REZERVACIJE", new EditReservationsUserPanel(rezervacije));
-        tabbedPane.addTab("CENOVNICI", new PricesInfoPanel(cene));
+        tabbedPane.addTab("Rezervisi Sobu", new ReserveRoomPanel(tipoviSobe, cene, rezervacije, ulogovanGost));
+        tabbedPane.addTab("Moje Rezervacije", new EditReservationsUserPanel(rezervacije));
+        tabbedPane.addTab("Cenovnik Hotela", new PricesInfoPanel(cene));
     }
 
     
