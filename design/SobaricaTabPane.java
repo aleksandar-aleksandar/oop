@@ -9,7 +9,7 @@ import panes.RoomServicePanel;
 public class SobaricaTabPane extends JFrame {
 
     SobaricaTabPane(List<Zaposleni> zaposleni, List<Rezervacija> rezervacije, List<Soba> sobe, List<Cenovnik> cene,
-            List<Gost> gosti, List<TipSobe> tipoviSobe, List<Usluga> usluge) {
+            List<Gost> gosti, List<TipSobe> tipoviSobe, List<Usluga> usluge, String sobaricaKorisnickoIme) {
         super("Sobarica");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +22,7 @@ public class SobaricaTabPane extends JFrame {
         add(tabbedPane);
 
         tabbedPane.addTab("Odjava", new LogOutPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
-        tabbedPane.addTab("Raspremi Sobe", new RoomServicePanel(sobe));
+        tabbedPane.addTab("Raspremi Sobe", new RoomServicePanel(sobe, sobaricaKorisnickoIme));
         
 
     }

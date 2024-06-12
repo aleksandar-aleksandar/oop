@@ -30,8 +30,8 @@ public class RecepcionarTabPane extends JFrame {
         tabbedPane.addTab("Registruj Gosta", new AddUserPanel(gosti));
         tabbedPane.addTab("Svi Gost", new AllUsersPanel(gosti));
         tabbedPane.addTab("Check In", new UserCheckInPanel(rezervacije, gosti, sobe));
-        tabbedPane.addTab("Check Out", new UserCheckOutPanel(sobe));
-        tabbedPane.addTab("Reguliši Rezervacije", new EditReservationsPanel(rezervacije));
+        tabbedPane.addTab("Check Out", new UserCheckOutPanel(sobe, zaposleni));
+        tabbedPane.addTab("Reguliši Rezervacije", new EditReservationsPanel(rezervacije, sobe));
         tabbedPane.addTab("Sve Rezervacije", new AllReservationsPanel(rezervacije));
         tabbedPane.addTab("Sve Sobe", new AllRoomsPanel(sobe));
     }

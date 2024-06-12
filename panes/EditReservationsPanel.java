@@ -1,14 +1,18 @@
 package panes;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import logic.DataManager;
 import logic.Rezervacija;
+import logic.Soba;
 
 public class EditReservationsPanel extends JPanel {
-    public EditReservationsPanel(List<Rezervacija> rezervacije){
+    public EditReservationsPanel(List<Rezervacija> rezervacije, List<Soba> sobe){
         setLayout(null);
         
         // Headers for the table
@@ -66,21 +70,50 @@ public class EditReservationsPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Molimo upišite broj rezervacije i izaberite opciju!", "Greška", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+        
+                String reservationId = textField2.getText();
+                boolean isConfirm = rdbtnNewRadioButton.isSelected();
+                
+               int brojMogucihSoba = 0;
+               int brojZauzetihSoba = 0;
 
                 for (Rezervacija rezervacija : rezervacije) {
-                    if (rezervacija.id.equals(textField2.getText())) {
-                        if (rdbtnNewRadioButton.isSelected()) {
-                            rezervacija.stanje = "POTVRDJENO";
-                        } else if (rdbtnNewRadioButton_1.isSelected()) {
+                    if (rezervacija.id.equals(reservationId)) {
+                        for (Soba soba: sobe){
+                            if(soba.tip.equals(rezervacija.tipSobe)){
+                                brojMogucihSoba = brojMogucihSoba + 1;
+                            }
+                        }
+                        if (isConfirm) {
+                            // Check for clashes with other reservations
+                            for (Rezervacija existingReservation : rezervacije) {
+                                if (!existingReservation.id.equals(reservationId)) { // Skip the current reservation
+                                    if (isDateOverlap(rezervacija, existingReservation) && existingReservation.stanje.equals("POTVRDJENO")) {
+                                        brojZauzetihSoba = brojZauzetihSoba + 1;
+                                    }
+                                }
+                            }
+                            if(brojMogucihSoba > brojZauzetihSoba){
+                                rezervacija.stanje = "POTVRDJENO";
+                            }else{  
+                                rezervacija.stanje = "ODBIJENO";
+                                JOptionPane.showMessageDialog(null, "Konflikt sa postojećom rezervacijom!", "Greška", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                        } else {
                             rezervacija.stanje = "ODBIJENO";
                         }
                         break;
                     }
                 }
                 DataManager.upisiRezervacije(rezervacije);
+
+                System.out.println(brojMogucihSoba);
+                System.out.println(brojZauzetihSoba);
             }
         });
-
+        
+       
         JButton osveziRezervacije11 = new JButton("Osveži");
         osveziRezervacije11.setBounds(200, 312, 80, 23);
         add(osveziRezervacije11);
@@ -100,4 +133,25 @@ public class EditReservationsPanel extends JPanel {
             }
         });
     }
+
+    private boolean isDateOverlap(Rezervacija newReservation, Rezervacija existingReservation) {
+    // Convert date strings to Date objects
+    Date newStartDate = null;
+    Date newEndDate = null;
+    Date existingStartDate = null;
+    Date existingEndDate = null;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    try {
+        newStartDate = dateFormat.parse(newReservation.datumPocetka);
+        newEndDate = dateFormat.parse(newReservation.datumZavrsetka);
+        existingStartDate = dateFormat.parse(existingReservation.datumPocetka);
+        existingEndDate = dateFormat.parse(existingReservation.datumZavrsetka);
+    } catch (ParseException e) {
+        e.printStackTrace();
+    }
+
+    // Check if the date ranges overlap
+    return newStartDate != null && newEndDate != null && existingStartDate != null && existingEndDate != null &&
+           newStartDate.before(existingEndDate) && existingStartDate.before(newEndDate);
+}
 }

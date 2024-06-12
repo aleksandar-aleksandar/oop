@@ -52,7 +52,7 @@ public class Login extends JFrame {
                             } else if (radnik instanceof Recepcionar) {
                                 new RecepcionarTabPane(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge);
                             } else if (radnik instanceof Sobarica) {
-                                new SobaricaTabPane(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge);
+                                new SobaricaTabPane(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge, username);
                             }
                         }
                     }

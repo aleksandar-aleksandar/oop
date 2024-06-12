@@ -9,12 +9,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import logic.DataManager;
 import logic.Soba;
 
 public class RoomServicePanel extends JPanel {
-    public RoomServicePanel(List<Soba> sobe){
+    public RoomServicePanel(List<Soba> sobe, String sobaricaKorisnickoIme){
         setLayout(null);
 
         String[] nasloviSoba = { "Broj sobe", "Tip", "Stanje" };
@@ -22,10 +21,14 @@ public class RoomServicePanel extends JPanel {
         DefaultTableModel modelSobe = new DefaultTableModel(nasloviSoba, 0); // Create model with column names
 
         for (Soba soba : sobe) {
-            if (soba.stanje.equals("ZA CISCENJE")) {
-                Object[] rowData = { soba.brojSobe, soba.tip, soba.stanje };
-                modelSobe.addRow(rowData);
-            }
+            if(!soba.stanje.equals("SLOBODNO") && !soba.stanje.equals("ZAUZETO")){
+                String stanjeSobe = soba.stanje.split("\\|")[0];
+                String sobarica = soba.stanje.split("\\|")[1];
+                if (stanjeSobe.equals("ZA CISCENJE") && sobarica.equals(sobaricaKorisnickoIme)) {
+                    Object[] rowData = { soba.brojSobe, soba.tip, soba.stanje };
+                    modelSobe.addRow(rowData);
+                }
+            }  
         }
 
         JTable table = new JTable(modelSobe);
@@ -54,12 +57,17 @@ public class RoomServicePanel extends JPanel {
                 String brojSoba = textField.getText();
                 for (Soba soba : sobe) {
                     if (soba.brojSobe.equals(brojSoba)) {
-                        if (soba.stanje.equals("ZA CISCENJE")) {
-                            soba.stanje = "SLOBODNO";
+                        if(!soba.stanje.equals("SLOBODNO") && !soba.stanje.equals("ZAUZETO")){
+                            String stanjeSobe = soba.stanje.split("\\|")[0];
+                            String sobarica = soba.stanje.split("\\|")[1];
+                            System.out.println(soba.brojSobe);
+                            if (stanjeSobe.equals("ZA CISCENJE") && sobarica.equals(sobaricaKorisnickoIme)) {
+                                soba.stanje = "SLOBODNO";
                             System.out.println("Uspesno ste raspremili sobu " + soba.brojSobe);
                             DataManager.upisiSobe(sobe);
                             break;
-                        }
+                            }
+                        }  
                     }
                 }
 
