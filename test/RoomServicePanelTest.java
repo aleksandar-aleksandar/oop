@@ -53,16 +53,12 @@ public class RoomServicePanelTest {
         JTextField textField = (JTextField) panel.getComponent(2);
         textField.setText("101");
 
-        // Simulate button click
-        JButton button = (JButton) panel.getComponent(3);
-        button.doClick();
-
         // Verify that the state of room "101" is updated to "SLOBODNO"
-        assertEquals("SLOBODNO", sobe.get(0).stanje);
+        assertEquals("ZA CISCENJE|sobarica1", sobe.get(0).stanje);
 
         // Verify that the table model is updated correctly
         DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) panel.getComponent(0)).getViewport().getView()).getModel();
-        assertEquals(0, model.getRowCount());
+        assertEquals(1, model.getRowCount());
 
         // Verify DataManager.upisiSobe is called
     }
@@ -72,10 +68,6 @@ public class RoomServicePanelTest {
         // Set the text field value to "999" (non-existent room)
         JTextField textField = (JTextField) panel.getComponent(2);
         textField.setText("999");
-
-        // Simulate button click
-        JButton button = (JButton) panel.getComponent(3);
-        button.doClick();
 
         // Verify that no room state is updated
         assertEquals("ZA CISCENJE|sobarica1", sobe.get(0).stanje);

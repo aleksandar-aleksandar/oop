@@ -1,15 +1,13 @@
+4. Napraviti Izvestaje
+
+6. Dodati chartove
+
 Odrađeno 1. Cenovnik da unapredim ta bude dinamicniji, kad se doda neka usluga da se doda i mesto za nju
 
 Odrađeno 2. Kod potvrde rezervacija proveriti da li vec ima neka potvrđena rezervaija u tom periodu
 
-3. Napraviti Unit Testove
+Odrađeno 3. Napraviti Unit Testove
 
-4. Napraviti Izvestaje
+Odrađeno 5. Dodati plate radnicimađ
 
-Odrađeno 5. Dodati plate radnicima
-
-6. Dodati chartove
-
-7. Serijalizacija??
-
-8. Enumeracija??
+9. Očistiti komentare
