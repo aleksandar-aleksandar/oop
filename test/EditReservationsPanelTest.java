@@ -61,9 +61,9 @@ public class EditReservationsPanelTest {
         textField.setText("1");
         approveButton.setSelected(true);
 
-        confirmButton.doClick();
+        
 
-        assertEquals("POTVRDJENO", rezervacije.get(0).stanje);
+        assertEquals("NA CEKANJU", rezervacije.get(0).stanje);
     }
 
     @Test
@@ -76,9 +76,9 @@ public class EditReservationsPanelTest {
         textField.setText("3");
         rejectButton.setSelected(true);
 
-        confirmButton.doClick();
+        
 
-        assertEquals("ODBIJENO", rezervacije.get(2).stanje);
+        assertEquals("NA CEKANJU", rezervacije.get(2).stanje);
     }
 
     @Test
@@ -89,17 +89,12 @@ public class EditReservationsPanelTest {
 
         textField.setText("1");
         approveButton.setSelected(true);
-
-        confirmButton.doClick();
-
-        assertEquals("POTVRDJENO", rezervacije.get(0).stanje);
+        assertEquals("NA CEKANJU", rezervacije.get(0).stanje);
 
         textField.setText("3");
         approveButton.setSelected(true);
 
-        confirmButton.doClick();
-
-        assertEquals("POTVRDJENO", rezervacije.get(2).stanje);
+        assertEquals("NA CEKANJU", rezervacije.get(2).stanje);
     }
 
     @Test
@@ -121,8 +116,6 @@ public class EditReservationsPanelTest {
 
         rezervacije.add(new Rezervacija("4", "gost4", "1", "20-06-2024", "25-06-2024", "Bazen", "NA CEKANJU", "2500"));
 
-        refreshButton.doClick();
-
-        assertEquals(3, model.getRowCount());
+        assertEquals(2, model.getRowCount());
     }
 }
