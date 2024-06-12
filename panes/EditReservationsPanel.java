@@ -134,7 +134,7 @@ public class EditReservationsPanel extends JPanel {
         });
     }
 
-    private boolean isDateOverlap(Rezervacija newReservation, Rezervacija existingReservation) {
+    public boolean isDateOverlap(Rezervacija newReservation, Rezervacija existingReservation) {
     // Convert date strings to Date objects
     Date newStartDate = null;
     Date newEndDate = null;
