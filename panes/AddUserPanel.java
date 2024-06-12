@@ -13,14 +13,14 @@ import logic.DataManager;
 import logic.Gost;
 
 public class AddUserPanel extends JPanel {
-    private JTextField textField;
-    private JTextField textField_1;
-    private JTextField textField_2;
-    private JTextField textField_3;
-    private JTextField textField_4;
-    private JTextField textField_5;
-    private JTextField textField_6;
-    private JTextField textField_7;
+    public JTextField textField;
+    public JTextField textField_1;
+    public JTextField textField_2;
+    public JTextField textField_3;
+    public JTextField textField_4;
+    public JTextField textField_5;
+    public JTextField textField_6;
+    public JTextField textField_7;
 
     public AddUserPanel(List<Gost> gosti) {
         setLayout(null);
@@ -126,7 +126,7 @@ public class AddUserPanel extends JPanel {
         });
     }
 
-    private boolean validateFields() {
+    public boolean validateFields() {
         if (textField.getText().trim().isEmpty() || textField_1.getText().trim().isEmpty() || textField_2.getText().trim().isEmpty() ||
             textField_3.getText().trim().isEmpty() || textField_4.getText().trim().isEmpty() || textField_5.getText().trim().isEmpty() ||
             textField_6.getText().trim().isEmpty() || textField_7.getText().trim().isEmpty()) {
@@ -144,13 +144,13 @@ public class AddUserPanel extends JPanel {
         return true;
     }
 
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pat = Pattern.compile(emailRegex);
         return pat.matcher(email).matches();
     }
 
-    private boolean isNumeric(String str) {
+    public boolean isNumeric(String str) {
         try {
             Long.parseLong(str);
             return true;
