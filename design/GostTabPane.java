@@ -3,7 +3,6 @@ package design;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import logic.Cenovnik;
 import logic.Gost;
 import logic.Rezervacija;
@@ -17,9 +16,6 @@ import panes.PricesInfoPanel;
 import panes.ReserveRoomPanel;
 
 public class GostTabPane extends JFrame {
-    private JTextField textField;
-    private JTextField textField_1;
-
     GostTabPane(List<Zaposleni> zaposleni, List<Rezervacija> rezervacije, List<Soba> sobe, List<Cenovnik> cene,
             List<Gost> gosti, List<TipSobe> tipoviSobe, Gost ulogovanGost, List<Usluga> usluge) {
 

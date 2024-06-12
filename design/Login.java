@@ -1,12 +1,10 @@
 package design;
 
-import logic.*;
-
-import javax.swing.*;
-
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.*;
+import logic.*;
 
 public class Login extends JFrame {
 
@@ -43,7 +41,9 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = passwordField.getText();
+                System.out.println(username + password);
                 for (Zaposleni radnik : zaposleni) {
+                    System.out.println(radnik);
                     if (radnik.korisnickoIme.equals(username)) {
                         if (radnik.lozinka.equals(password)) {
                             dispose();
@@ -66,7 +66,6 @@ public class Login extends JFrame {
                         }
                     }
                 }
-
             }
         });
 

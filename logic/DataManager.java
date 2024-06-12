@@ -16,25 +16,24 @@ public class DataManager {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
-                if (podaci.length != 11) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                if (podaci.length != 12) {
+                    System.out.println("Desila se greska u citanju podataka!  zaposlenii");
                     break;
                 }
 
-                if (podaci[10].equals("administrator")) {
+                if (podaci[11].equals("administrator")) {
                     zaposleni.add(new Administrator(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5],
                             podaci[6],
-                            podaci[7], podaci[8], podaci[9]));
-                } else if (podaci[10].equals("recepcionar")) {
+                            podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
+                } else if (podaci[11].equals("recepcionar")) {
                     zaposleni.add(
                             new Recepcionar(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5], podaci[6],
-                                    podaci[7], podaci[8], podaci[9]));
-                } else if (podaci[10].equals("sobarica")) {
+                                    podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
+                } else if (podaci[11].equals("sobarica")) {
                     zaposleni.add(
                             new Sobarica(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5], podaci[6],
-                                    podaci[7], podaci[8], podaci[9]));
+                                    podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
                 }
-
             }
             System.out.println("Zaposleni uspesno ucitani!");
         } catch (IOException e) {
@@ -50,7 +49,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 8) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka! rez");
                     break;
                 }
 
@@ -74,7 +73,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 3) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka! sobe");
                     break;
                 }
                 sobe.add(new Soba(podaci[0], podaci[1], podaci[2]));
@@ -95,7 +94,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 12) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka!cene");
                     break;
                 }
                 cene.add(new Cenovnik(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5], podaci[6],
@@ -116,7 +115,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 1) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka! tipovi");
                     break;
                 }
                 tipoviSobe.add(new TipSobe(podaci[0]));
@@ -137,7 +136,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 8) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka! gosti");
                     break;
                 }
                 gosti.add(new Gost(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5],
@@ -159,7 +158,7 @@ public class DataManager {
             while ((line = br.readLine()) != null) {
                 String[] podaci = line.split(",");
                 if (podaci.length != 1) {
-                    System.out.println("Desila se greska u citanju podataka!");
+                    System.out.println("Desila se greska u citanju podataka! usluge");
                     break;
                 }
                 usluge.add(new Usluga(podaci[0]));

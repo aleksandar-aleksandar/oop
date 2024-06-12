@@ -1,35 +1,36 @@
 package panes;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import logic.Administrator;
 import logic.DataManager;
 import logic.Recepcionar;
 import logic.Sobarica;
 import logic.Zaposleni;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 public class AddEmployeePanel extends JPanel {
 
-    public JTextField textField;
-    public JTextField textField_1;
-    public JTextField textField_2;
-    public JTextField textField_3;
-    public JTextField textField_4;
-    public JTextField textField_5;
-    public JTextField textField_6;
-    public JTextField textField_7;
-    public JTextField textField_8;
-    public JTextField textField_9;
+    private JTextField textField;
+    private JTextField textField_1;
+    private JTextField textField_2;
+    private JTextField textField_3;
+    private JTextField textField_4;
+    private JTextField textField_5;
+    private JTextField textField_6;
+    private JTextField textField_7;
+    private JTextField textField_8;
+    private JTextField textField_9;
 
     public AddEmployeePanel(List<Zaposleni> zaposleni) {
         setLayout(null);
+        
         JLabel lblNewLabel4 = new JLabel("Pozicija");
         lblNewLabel4.setBounds(32, 40, 46, 14);
         add(lblNewLabel4);
@@ -132,6 +133,10 @@ public class AddEmployeePanel extends JPanel {
         textField_9.setBounds(438, 207, 86, 20);
         add(textField_9);
 
+        JLabel lblPlata = new JLabel("Plata: ");
+        lblPlata.setBounds(317, 320, 86, 14);
+        add(lblPlata);
+
         JButton btnNewButton = new JButton("Dodaj");
         btnNewButton.setBounds(317, 275, 201, 43);
         add(btnNewButton);
@@ -139,6 +144,11 @@ public class AddEmployeePanel extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!validateFields()) {
+                    JOptionPane.showMessageDialog(null, "Molimo popunite sva polja pravilno.", "Greška", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
                 String ime = textField.getText();
                 String prezime = textField_1.getText();
                 String pol = textField_2.getText();
@@ -150,22 +160,45 @@ public class AddEmployeePanel extends JPanel {
                 String lozinka = textField_7.getText();
                 String nivo = textField_9.getText();
                 String poz = tipoviZaposlenih.getSelectedItem().toString();
+                int plata = izracunajPlatu(godine, nivo);
 
                 if (poz.equals("administrator")) {
-                    zaposleni.add(new Administrator(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka,
-                            godine, nivo));
+                    zaposleni.add(new Administrator(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka, godine, nivo, plata));
                 } else if (poz.equals("recepcionar")) {
-                    zaposleni.add(new Recepcionar(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka,
-                            godine, nivo));
+                    zaposleni.add(new Recepcionar(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka, godine, nivo,plata));
                 } else if (poz.equals("sobarica")) {
-                    zaposleni.add(new Sobarica(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka,
-                            godine, nivo));
+                    zaposleni.add(new Sobarica(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka, godine, nivo,plata));
                 }
 
-                System.out.println("kreiramo novog zaposlenog: " + ime + " " + nivo + " " + poz);
                 DataManager.upisiZaposlene(zaposleni);
+                lblPlata.setText("Plata: " + plata);
+                JOptionPane.showMessageDialog(null, "Zaposleni uspešno dodat!", "Uspeh", JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
-    
+
+    private boolean validateFields() {
+        if (textField.getText().trim().isEmpty() || textField_1.getText().trim().isEmpty() || textField_2.getText().trim().isEmpty() ||
+            textField_3.getText().trim().isEmpty() || textField_4.getText().trim().isEmpty() || textField_5.getText().trim().isEmpty() ||
+            textField_6.getText().trim().isEmpty() || textField_7.getText().trim().isEmpty() || textField_8.getText().trim().isEmpty() ||
+            textField_9.getText().trim().isEmpty()) {
+            return false;
+        }
+        
+        try {
+            Integer.parseInt(textField_8.getText());
+            Integer.parseInt(textField_9.getText());
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    public int izracunajPlatu(String godine, String nivo) {
+        int plata = 30000;
+        plata = plata + 10000 * Integer.parseInt(nivo);
+        plata = plata + 2500 * Integer.parseInt(godine);
+        return plata;
+    }
 }

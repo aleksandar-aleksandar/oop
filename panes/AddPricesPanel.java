@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import logic.Cenovnik;
 import logic.DataManager;
 
@@ -118,18 +117,18 @@ public class AddPricesPanel extends JPanel {
         sacuvajCene.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String cena1 = jednokrevetnaTxt.getText().toString();
-                String cena2 = dvokrevetnaTxt.getText().toString();
-                String cena3 = dvokrevetna2Txt.getText().toString();
-                String cena4 = trokrevetnaTxt.getText().toString();
-                String cena5 = cetvorokrevetnaTxt.getText().toString();
-                String cena6 = dorucakTxt.getText().toString();
-                String cena7 = rucakTxt.getText().toString();
-                String cena8 = veceraTxt.getText().toString();
-                String cena9 = bazenTxt.getText().toString();
-                String cena10 = spaTxt.getText().toString();
-                String datumPocetka = dpTxt.getText().toString();
-                String datumZavrsetka = dzTxt.getText().toString();
+                String cena1 = jednokrevetnaTxt.getText();
+                String cena2 = dvokrevetnaTxt.getText();
+                String cena3 = dvokrevetna2Txt.getText();
+                String cena4 = trokrevetnaTxt.getText();
+                String cena5 = cetvorokrevetnaTxt.getText();
+                String cena6 = dorucakTxt.getText();
+                String cena7 = rucakTxt.getText();
+                String cena8 = veceraTxt.getText();
+                String cena9 = bazenTxt.getText();
+                String cena10 = spaTxt.getText();
+                String datumPocetka = dpTxt.getText();
+                String datumZavrsetka = dzTxt.getText();
 
                 cene.add(new Cenovnik(cena1, cena2, cena3, cena4, cena5, cena6, cena7, cena8, cena9, cena10,
                         datumPocetka, datumZavrsetka));

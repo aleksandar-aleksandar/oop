@@ -5,3 +5,11 @@
 3. Napraviti Unit Testove
 
 4. Napraviti Izvestaje
+
+5. Dodati plate radnicima
+
+6. Dodati chartove
+
+7. Serijalizacija??
+
+8. Enumeracija??
