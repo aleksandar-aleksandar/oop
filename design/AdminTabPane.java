@@ -11,6 +11,7 @@ import panes.EditEmployeePanel;
 import panes.EditPricesPanel;
 import panes.EditRoomPanel;
 import panes.LogOutPanel;
+import panes.ReportPanel;
 
 public class AdminTabPane extends JFrame {
 
@@ -35,6 +36,7 @@ public class AdminTabPane extends JFrame {
         tabbedPane.addTab("Uredi Sobe",new EditRoomPanel(sobe));
         tabbedPane.addTab("Dodaj Cenovnik", new AddPricesPanel(cene));
         tabbedPane.addTab("Uredi Cenovnike", new EditPricesPanel(cene));
+        tabbedPane.addTab("Izveštaji", new ReportPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
     }
 
     public static void main(String[] args) {

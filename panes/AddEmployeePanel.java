@@ -160,7 +160,7 @@ public class AddEmployeePanel extends JPanel {
                 String lozinka = textField_7.getText();
                 String nivo = textField_9.getText();
                 String poz = tipoviZaposlenih.getSelectedItem().toString();
-                int plata = izracunajPlatu(godine, nivo);
+                String plata = Integer.toString(izracunajPlatu(godine, nivo));
 
                 if (poz.equals("administrator")) {
                     zaposleni.add(new Administrator(ime, prezime, pol, datum, broj, adresa, korisnickoIme, lozinka, godine, nivo, plata));

@@ -24,15 +24,15 @@ public class DataManager {
                 if (podaci[11].equals("administrator")) {
                     zaposleni.add(new Administrator(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5],
                             podaci[6],
-                            podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
+                            podaci[7], podaci[8], podaci[9], podaci[10]));
                 } else if (podaci[11].equals("recepcionar")) {
                     zaposleni.add(
                             new Recepcionar(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5], podaci[6],
-                                    podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
+                                    podaci[7], podaci[8], podaci[9], podaci[10]));
                 } else if (podaci[11].equals("sobarica")) {
                     zaposleni.add(
                             new Sobarica(podaci[0], podaci[1], podaci[2], podaci[3], podaci[4], podaci[5], podaci[6],
-                                    podaci[7], podaci[8], podaci[9], Integer.parseInt(podaci[10])));
+                                    podaci[7], podaci[8], podaci[9], "1000"));
                 }
             }
             System.out.println("Zaposleni uspesno ucitani!");
