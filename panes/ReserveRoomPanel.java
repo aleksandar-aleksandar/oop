@@ -23,8 +23,8 @@ import logic.TipSobe;
 
 public class ReserveRoomPanel extends JPanel {
 
-    private JTextField textField;
-    private JTextField textField_1;
+    public JTextField textField;
+    public JTextField textField_1;
 
     public ReserveRoomPanel(List<TipSobe> tipoviSobe, List<Cenovnik> cene, List<Rezervacija> rezervacije, Gost ulogovanGost) {
         setLayout(null);
@@ -133,7 +133,7 @@ public class ReserveRoomPanel extends JPanel {
         });
     }
 
-    private boolean validateFields() {
+    public boolean validateFields() {
         String datumPocetka = textField.getText();
         String datumZavrsetka = textField_1.getText();
 

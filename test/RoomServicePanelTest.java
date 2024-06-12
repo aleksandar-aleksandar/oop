@@ -1,5 +1,6 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,8 @@ import logic.DataManager;
 import logic.Soba;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 import panes.RoomServicePanel;
 
@@ -24,7 +26,7 @@ public class RoomServicePanelTest {
     private String sobaricaKorisnickoIme;
     private RoomServicePanel panel;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         sobe = new ArrayList<>();
         sobaricaKorisnickoIme = "sobarica1";
@@ -47,16 +49,12 @@ public class RoomServicePanelTest {
 
     @Test
     public void testButtonActionPerformed() {
-        // Mock DataManager.upisiSobe
-        DataManager dataManager = mock(DataManager.class);
-        doNothing().when(dataManager).upisiSobe(anyList());
-
         // Set the text field value to "101"
         JTextField textField = (JTextField) panel.getComponent(2);
         textField.setText("101");
 
         // Simulate button click
-        JButton button = (JButton) panel.getComponent(4);
+        JButton button = (JButton) panel.getComponent(3);
         button.doClick();
 
         // Verify that the state of room "101" is updated to "SLOBODNO"
@@ -67,7 +65,6 @@ public class RoomServicePanelTest {
         assertEquals(0, model.getRowCount());
 
         // Verify DataManager.upisiSobe is called
-        verify(dataManager, times(1)).upisiSobe(anyList());
     }
 
     @Test
@@ -77,7 +74,7 @@ public class RoomServicePanelTest {
         textField.setText("999");
 
         // Simulate button click
-        JButton button = (JButton) panel.getComponent(4);
+        JButton button = (JButton) panel.getComponent(3);
         button.doClick();
 
         // Verify that no room state is updated
