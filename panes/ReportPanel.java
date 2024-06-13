@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -89,6 +90,27 @@ public class ReportPanel extends JPanel {
                 String startDate = textField10.getText();
                 String endDate = textField20.getText();
                 String selectedIzvestaj = (String) izvestaji.getSelectedItem();
+
+                // Validate start date and end date
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                dateFormat.setLenient(false); // Disable lenient parsing
+
+                try {
+                    // Parse start date
+                    dateFormat.parse(startDate);
+
+                    // Parse end date
+                    dateFormat.parse(endDate);
+
+                    // Ensure end date is not before start date
+                    if (dateFormat.parse(endDate).before(dateFormat.parse(startDate))) {
+                        JOptionPane.showMessageDialog(ReportPanel.this, "End date cannot be before start date!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } catch (ParseException ex) {
+                    JOptionPane.showMessageDialog(ReportPanel.this, "Invalid date format!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 if (selectedIzvestaj != null) {
                     switch (selectedIzvestaj) {
                         case "Prihodi i rashodi":
@@ -104,13 +126,13 @@ public class ReportPanel extends JPanel {
                             generateBrojOdbijenihRezervacijaReport(startDate, endDate, rezervacije);
                             break;
                         case "Broj očišćenih soba":
-                            generateBrojOciscenihSobaReport(startDate, endDate);
+                            generateBrojOciscenihSobaReport(startDate, endDate, rezervacije);
                             break;
                         case "Broj noćenja po tipu sobe":
                             generateBrojNocenjaPoTipuSobeReport(startDate, endDate, rezervacije, tipoviSobe);
                             break;
                         case "Ukupan prihod svake od soba":
-                            generateUkupanPrihodSvakeOdSobaReport(startDate, endDate);
+                            generateUkupanPrihodSvakeOdSobaReport(startDate, endDate, rezervacije);
                             break;
                         default:
                             break;
@@ -183,7 +205,8 @@ public class ReportPanel extends JPanel {
                 e.printStackTrace();
             }
            
-            if((rezervacija.stanje.equals("POTVRDJENO")) && datumPocetkaRezervacije.after(startDateDate) && datumZavrsetkaRezervacije.before(endDateDate)){
+            if((!rezervacija.stanje.equals("OTKAZANA") && !rezervacija.stanje.equals("ODBIJENO") && !rezervacija.stanje.equals("NA CEKANJU")) &&
+            datumPocetkaRezervacije.after(startDateDate) && datumZavrsetkaRezervacije.before(endDateDate)){
                 brojRez = brojRez + 1;
             }
         }
@@ -249,11 +272,57 @@ public class ReportPanel extends JPanel {
         displayReport(report);
     }
 
-    private void generateBrojOciscenihSobaReport(String startDate, String endDate) {
-        // Implement logic to generate Broj očišćenih soba report
-        // Use startDate and endDate as needed
-        String report = "Implement logic for Broj očišćenih soba report here.";
-        displayReport(report);
+    private void generateBrojOciscenihSobaReport(String startDate, String endDate, List<Rezervacija> rezervacije ) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDateDate = null;
+        Date endDateDate = null;
+
+        try {
+            startDateDate = sdf.parse(startDate);
+            endDateDate = sdf.parse(endDate);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return; // Exit if the dates are not valid
+        }
+
+        Map<String, Integer> brojOciscenihSobaPoRadniku = new HashMap<>();
+
+        for (Rezervacija rezervacija : rezervacije) {
+            Date datumPocetkaRezervacije = null;
+            Date datumZavrsetkaRezervacije = null;
+
+            try {
+                datumPocetkaRezervacije = sdf.parse(rezervacija.datumPocetka);
+                datumZavrsetkaRezervacije = sdf.parse(rezervacija.datumZavrsetka);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue; // Skip this reservation if the dates are not valid
+            }
+
+            if ((!rezervacija.stanje.equals("OTKAZANA") && !rezervacija.stanje.equals("ODBIJENO") && !rezervacija.stanje.equals("POTVRDJENO")&& !rezervacija.stanje.equals("NA CEKANJU")) &&
+                    datumPocetkaRezervacije.after(startDateDate) && datumZavrsetkaRezervacije.before(endDateDate)) {
+                System.out.println(rezervacija);
+                // Extract the worker's name who cleaned the room
+                String[] stanjeParts = rezervacija.stanje.split("\\|");
+                if (stanjeParts.length > 1) {
+                    String workerName = stanjeParts[1];
+
+                    // Update the HashMap with the number of rooms cleaned by the worker
+                    brojOciscenihSobaPoRadniku.put(workerName, brojOciscenihSobaPoRadniku.getOrDefault(workerName, 0) + 1);
+                }
+            }
+        }
+
+        // Generate the report string
+        StringBuilder report = new StringBuilder();
+        report.append("Broj očišćenih soba po radniku:\n");
+        for (Map.Entry<String, Integer> entry : brojOciscenihSobaPoRadniku.entrySet()) {
+            report.append("Radnik: ").append(entry.getKey())
+                  .append(", Broj očišćenih soba: ").append(entry.getValue()).append("\n");
+        }
+
+        // Display the report
+        displayReport(report.toString());
     }
 
    private void generateBrojNocenjaPoTipuSobeReport(String startDate, String endDate, List<Rezervacija> rezervacije, List<TipSobe> tipoviSobe) {
@@ -309,7 +378,7 @@ public class ReportPanel extends JPanel {
     }
 
 
-    private void generatePrihodPoTipuSobeReport(String startDate, String endDate, List<Rezervacija> rezervacije) {
+    private void generateUkupanPrihodSvakeOdSobaReport(String startDate, String endDate, List<Rezervacija> rezervacije) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startDateDate = null;
         Date endDateDate = null;
@@ -325,6 +394,7 @@ public class ReportPanel extends JPanel {
         Map<String, Integer> prihodPoTipuSobe = new HashMap<>();
 
         for (Rezervacija rezervacija : rezervacije) {
+            
             Date datumPocetkaRezervacije = null;
             Date datumZavrsetkaRezervacije = null;
 
@@ -337,8 +407,8 @@ public class ReportPanel extends JPanel {
             }
 
             if (!rezervacija.stanje.equals("ODBIJENO") && !rezervacija.stanje.equals("NA CEKANJU") &&
-                    datumPocetkaRezervacije.after(startDateDate) && datumZavrsetkaRezervacije.before(endDateDate)) {
-
+                    datumPocetkaRezervacije.after(startDateDate) && datumZavrsetkaRezervacije.before(endDateDate)){
+                System.out.println(rezervacija);
                 // Calculate the money earned for this reservation
                 int prihod = Integer.parseInt(rezervacija.cena);
 

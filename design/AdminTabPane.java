@@ -11,7 +11,10 @@ import panes.EditEmployeePanel;
 import panes.EditPricesPanel;
 import panes.EditRoomPanel;
 import panes.LogOutPanel;
+import panes.PieChartRoomServicePanel;
+import panes.PieChartRoomTypesPanel;
 import panes.ReportPanel;
+import panes.RevenueByRoomTypeGraph;
 
 public class AdminTabPane extends JFrame {
 
@@ -19,7 +22,7 @@ public class AdminTabPane extends JFrame {
     AdminTabPane(List<Zaposleni> zaposleni, List<Rezervacija> rezervacije, List<Soba> sobe, List<Cenovnik> cene,
             List<Gost> gosti, List<TipSobe> tipoviSobe, List<Usluga> usluge) {
         super("Admin");
-        setVisible(true);
+        
         setResizable(false);
         setBounds(0, 0, 800, 450);
         setLocationRelativeTo(null);
@@ -37,6 +40,10 @@ public class AdminTabPane extends JFrame {
         tabbedPane.addTab("Dodaj Cenovnik", new AddPricesPanel(cene));
         tabbedPane.addTab("Uredi Cenovnike", new EditPricesPanel(cene));
         tabbedPane.addTab("Izveštaji", new ReportPanel(zaposleni, rezervacije, sobe, cene, gosti, tipoviSobe, usluge));
+        tabbedPane.add("Pie", new PieChartRoomServicePanel(rezervacije));
+        tabbedPane.add("Pie2", new PieChartRoomTypesPanel(rezervacije));
+        tabbedPane.add("Graph", new RevenueByRoomTypeGraph(rezervacije));
+        setVisible(true);
     }
 
     public static void main(String[] args) {

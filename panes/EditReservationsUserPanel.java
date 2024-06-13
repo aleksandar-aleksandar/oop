@@ -20,7 +20,7 @@ public class EditReservationsUserPanel extends JPanel{
         setLayout(null);
         
         // Column headers for the table
-        String[] columnHeaders = { "ID", "Tip sobe", "Pocetak", "Zavrsetak", "Dodatne usluge", "Stanje" };
+        String[] columnHeaders = { "ID", "Tip sobe", "Pocetak", "Zavrsetak", "Dodatne usluge", "Stanje",  };
 
         // Create table model with column headers
         DefaultTableModel model = new DefaultTableModel(columnHeaders, 0);

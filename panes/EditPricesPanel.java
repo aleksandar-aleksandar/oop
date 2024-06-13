@@ -16,7 +16,7 @@ public class EditPricesPanel extends JPanel {
     public EditPricesPanel(List<Cenovnik> cene) {
         setLayout(null);
 
-        String[] nasloviCene = { "Cena 1", "Cena 2", "Cena 3", "Cena 4", "Cena 5", "Cena 6", "Cena 7", "Cena 8", "Cena 9", "Cena 10", "Datum Pocetka", "Datum Zavrsetka" };
+        String[] nasloviCene = { "1", "1+1", "2", "2+1", "2+2", "Dorucak", "Rucak", "Vecera", "Spa", "Bazen", "Datum Pocetka", "Datum Zavrsetka" };
 
         DefaultTableModel modelCene = new DefaultTableModel(nasloviCene, 0);
 

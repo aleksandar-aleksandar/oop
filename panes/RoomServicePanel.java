@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import logic.DataManager;
+import logic.Rezervacija;
 import logic.Soba;
 
 public class RoomServicePanel extends JPanel {
@@ -19,7 +20,7 @@ public class RoomServicePanel extends JPanel {
     public List<Soba> sobe;
     public String sobaricaKorisnickoIme;
 
-    public RoomServicePanel(List<Soba> sobe, String sobaricaKorisnickoIme) {
+    public RoomServicePanel(List<Soba> sobe, String sobaricaKorisnickoIme, List<Rezervacija> rezervacije) {
         this.sobe = sobe;
         this.sobaricaKorisnickoIme = sobaricaKorisnickoIme;
         initializeComponents();
@@ -79,6 +80,14 @@ public class RoomServicePanel extends JPanel {
                             break;
                         }
                     }
+                }
+            }
+            
+            for(Rezervacija rezervacija: rezervacije){
+                if(rezervacija.brojSobe.equals(brojSoba)){
+                    rezervacija.stanje += "|"+sobaricaKorisnickoIme;
+                    DataManager.upisiRezervacije(rezervacije);
+                    break;
                 }
             }
 
