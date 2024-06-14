@@ -20,7 +20,7 @@ public class EditReservationsUserPanel extends JPanel{
         setLayout(null);
         
         // Column headers for the table
-        String[] columnHeaders = { "ID", "Tip sobe", "Pocetak", "Zavrsetak", "Dodatne usluge", "Stanje",  };
+        String[] columnHeaders = { "ID", "Tip sobe", "Pocetak", "Zavrsetak", "Dodatne usluge", "Stanje","Cena"  };
 
         // Create table model with column headers
         DefaultTableModel model = new DefaultTableModel(columnHeaders, 0);
@@ -28,7 +28,7 @@ public class EditReservationsUserPanel extends JPanel{
         // Populate the table model with reservation data
         for (Rezervacija rezervacija : rezervacije) {
             Object[] rowData = { rezervacija.id, rezervacija.tipSobe, rezervacija.datumPocetka,
-                    rezervacija.datumZavrsetka, rezervacija.dodatneUsluge, rezervacija.stanje };
+                    rezervacija.datumZavrsetka, rezervacija.dodatneUsluge, rezervacija.stanje, rezervacija.cena };
             model.addRow(rowData);
         }
 
